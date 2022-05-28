@@ -1,8 +1,8 @@
 <template>
     <div>
-        <div class="preloader flex-column justify-content-center align-items-center">
+        <!-- <div class="preloader flex-column justify-content-center align-items-center">
             <img class="animation__shake" src="https://adminlte.io/themes/v3/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
-        </div>
+        </div> -->
         <nav class="main-header navbar navbar-expand navbar-dark">
             <!-- Left navbar links -->
             <ul class="navbar-nav">

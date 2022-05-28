@@ -45,7 +45,7 @@
                         <div class="row">
                             <div class="col-8">
                                 <div class="icheck-primary">
-                                    <input type="checkbox" id="remember" />
+                                    <input type="checkbox" id="remember" v-model="form.remember" />
                                     <label for="remember"> Remember Me </label>
                                 </div>
                             </div>
@@ -90,7 +90,8 @@ export default {
         const form = reactive({
             email: "",
             password: "",
-        });
+            remember: false,
+        })
 
         //method storeLogin
         const storeLogin = () => {
@@ -98,13 +99,14 @@ export default {
             Inertia.post("/login", {
                 email: form.email,
                 password: form.password,
-            });
-        };
+                remember: form.remember,
+            })
+        }
 
         return {
             form,
             storeLogin,
-        };
+        }
     },
 };
 </script>

@@ -2,50 +2,72 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User;
-use Inertia\Inertia;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Providers\RouteServiceProvider;
+use App\Models\User;
+use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
-{    
+{
+    /*
+    |--------------------------------------------------------------------------
+    | Register Controller
+    |--------------------------------------------------------------------------
+    |
+    | This controller handles the registration of new users as well as their
+    | validation and creation. By default this controller uses a trait to
+    | provide this functionality without requiring any additional code.
+    |
+    */
+
+    use RegistersUsers;
+
     /**
-     * index
+     * Where to redirect users after registration.
+     *
+     * @var string
+     */
+    protected $redirectTo = RouteServiceProvider::HOME;
+
+    /**
+     * Create a new controller instance.
      *
      * @return void
      */
-    public function index()
+    public function __construct()
     {
-        return Inertia::render('Auth/Register');
+        $this->middleware('guest');
     }
-    
+
     /**
-     * store
+     * Get a validator for an incoming registration request.
      *
-     * @param  mixed $request
-     * @return void
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
      */
-    public function store(Request $request)
+    protected function validator(array $data)
     {
-        /**
-         * validate request
-         */
-        $this->validate($request, [
-            'name'      => 'required',
-            'email'     => 'required|unique:users',
-            'password'  => 'required|confirmed'
+        return Validator::make($data, [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
+    }
 
-        /**
-         * create user
-         */
-        User::create([
-            'name'      => $request->name,
-            'email'     => $request->email,
-            'password'  => bcrypt($request->password)
+    /**
+     * Create a new user instance after a valid registration.
+     *
+     * @param  array  $data
+     * @return \App\Models\User
+     */
+    protected function create(array $data)
+    {
+        return User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
         ]);
-
-        //redirect
-        return redirect('/login')->with('status', 'Register Berhasil!');
     }
 }
