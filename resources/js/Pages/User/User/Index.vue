@@ -61,7 +61,7 @@
                             </button>
                             {{ flash.error }}
                         </div>
-                        <div class="card">
+                        <div class="card m-0">
                             <div class="card-header">
                                 <h3 class="card-title">
                                     <Link
@@ -117,7 +117,13 @@
                                             <td>{{ user.created_at }}</td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <Link :href="route('user.edit', user.id)"
+                                                    <Link
+                                                        :href="
+                                                            route(
+                                                                'user.edit',
+                                                                user.id
+                                                            )
+                                                        "
                                                         class="btn btn-primary"
                                                     >
                                                         <i
@@ -125,7 +131,12 @@
                                                         ></i>
                                                     </Link>
                                                     <Link
-                                                        :href="route('user.destroy', user.id)"
+                                                        :href="
+                                                            route(
+                                                                'user.destroy',
+                                                                user.id
+                                                            )
+                                                        "
                                                         method="delete"
                                                         class="btn btn-danger"
                                                     >
@@ -138,10 +149,10 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div>
-                            <div class="card-footer">
-                                <div class="text-center mt-3">
-                                    <Pagination :links="users.links"></Pagination>
+                                <div class="text-center p-3" style="background: rgba(0,0,0,.03)">
+                                    <Pagination
+                                        :links="users.links"
+                                    ></Pagination>
                                 </div>
                             </div>
                         </div>
@@ -169,7 +180,7 @@ export default {
     components: {
         Link,
         Head,
-        Pagination
+        Pagination,
     },
     data() {
         return {
@@ -184,7 +195,7 @@ export default {
         flash: Object,
     },
     methods: {
-        search(q){
+        search(q) {
             Inertia.post(`/user/user/search`, this.form, {
                 onSuccess: (data) => {
                     this.isLoading = false;
@@ -194,7 +205,7 @@ export default {
                     this.isLoading = false;
                 },
             });
-        }
+        },
     },
 };
 </script>
