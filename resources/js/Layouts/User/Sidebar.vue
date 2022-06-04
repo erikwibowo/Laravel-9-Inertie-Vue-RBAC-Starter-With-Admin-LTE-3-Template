@@ -53,14 +53,14 @@
                     data-accordion="false"
                 >
                     <li class="nav-item">
-                        <Link href="/dashboard" class="nav-link" :class="{'active' : $page.component == 'User/Dashboard/Index'}">
+                        <Link href="/user/dashboard" class="nav-link" :class="{'active' : $page.component == 'User/Dashboard/Index'}">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>Dashboard</p>
                         </Link>
                     </li>
 
                     <li class="nav-item">
-                        <Link href="/user" class="nav-link" :class="{'active' : $page.component == 'User/User/Index'}">
+                        <Link href="/user/user" class="nav-link" :class="{'active' : $page.component == 'User/User/Index'}">
                             <i class="nav-icon fas fa-users"></i>
                             <p>User</p>
                         </Link>

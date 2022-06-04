@@ -1,16 +1,27 @@
-require("./bootstrap");
-
 import { createApp, h } from "vue";
-import { App, plugin } from "@inertiajs/inertia-vue3";
+import { createInertiaApp } from "@inertiajs/inertia-vue3";
+import { InertiaProgress } from "@inertiajs/progress";
 
-const el = document.getElementById("app");
+createInertiaApp({
+    title: (title) => `${title} - Inertia App`,
+    resolve: (name) => require(`./Pages/${name}`),
+    setup({ el, App, props, plugin }) {
+        createApp({ render: () => h(App, props) })
+            .use(plugin)
+            .mount(el);
+    },
+});
+InertiaProgress.init({
+    // The delay after which the progress bar will
+    // appear during navigation, in milliseconds.
+    delay: 250,
 
-createApp({
-    render: () =>
-        h(App, {
-            initialPage: JSON.parse(el.dataset.page),
-            resolveComponent: (name) => require(`./Pages/${name}`).default,
-        }),
-})
-    .use(plugin)
-    .mount(el);
+    // The color of the progress bar.
+    color: "#29d",
+
+    // Whether to include the default NProgress styles.
+    includeCSS: true, //this
+
+    // Whether the NProgress spinner will be shown.
+    showSpinner: false,
+});

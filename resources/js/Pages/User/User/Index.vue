@@ -1,4 +1,5 @@
 <template>
+<Head title="User" />
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -115,13 +116,13 @@
 <script>
 //import layout App
 import LayoutApp from "../../../Layouts/User/App.vue";
-import { Link } from "@inertiajs/inertia-vue3";
+import { Link, Head } from "@inertiajs/inertia-vue3";
 
 export default {
     //set layout
     layout: LayoutApp,
     components: {
-        Link,
+        Link, Head
     },
     props: {
         users: Object,
