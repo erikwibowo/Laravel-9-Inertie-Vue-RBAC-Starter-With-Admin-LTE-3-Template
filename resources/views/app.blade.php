@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{{ asset('template/user/css/adminlte.min.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" /> 
     <script src="{{ mix('/js/app.js') }}" defer></script>
+    @routes
     @inertiaHead
     </head>
     <body class="sidebar-mini layout-fixed">
