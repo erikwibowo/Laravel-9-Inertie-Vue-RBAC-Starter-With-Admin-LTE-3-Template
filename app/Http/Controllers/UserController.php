@@ -14,10 +14,13 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         return Inertia::render('User/User/Index', [
-            'users' => User::orderBy('id', 'desc')->paginate(10)
+            'users' => User::when($request->q, function($query, $q){
+                $query->where('name', 'LIKE', "%".$q."%");
+                $query->Orwhere('email', 'LIKE', "%".$q."%");
+            })->orderBy('id', 'desc')->paginate(10)
         ]);
     }
 

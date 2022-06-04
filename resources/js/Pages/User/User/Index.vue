@@ -73,12 +73,12 @@
                                 </h3>
                                 <div class="card-tools">
                                     <div
-                                        class="input-group input-group-sm"
-                                        style="width: 150px"
+                                        class="input-group input-group"
+                                        style="width: 200px"
                                     >
                                         <input
-                                            v-model="form.q"
-                                            @input="search()"
+                                            v-model="q"
+                                            @keyup="search"
                                             type="text"
                                             name="table_search"
                                             class="form-control float-right"
@@ -106,7 +106,7 @@
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody v-if="users.data != 0">
                                         <tr
                                             v-for="(user, index) in users.data"
                                             :key="user.id"
@@ -148,6 +148,20 @@
                                             </td>
                                         </tr>
                                     </tbody>
+                                    <tbody v-if="users.data == 0">
+                                        <tr>
+                                            <td colspan="5">
+                                                <div class="text-center">
+                                                    <h5>
+                                                        <i
+                                                            class="fas fa-exclamation-triangle"
+                                                        ></i>
+                                                        No data found
+                                                    </h5>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
                                 </table>
                                 <div class="text-center p-3" style="background: rgba(0,0,0,.03)">
                                     <Pagination
@@ -171,8 +185,7 @@
 import LayoutApp from "../../../Layouts/User/App.vue";
 import Pagination from "../../../Layouts/User/Pagination.vue";
 import { Link, Head } from "@inertiajs/inertia-vue3";
-import { Inertia } from "@inertiajs/inertia";
-import { reactive } from "vue";
+import _ from "lodash";
 
 export default {
     //set layout
@@ -185,9 +198,7 @@ export default {
     data() {
         return {
             isLoading: false,
-            form: reactive({
-                q: "",
-            }),
+            q: "",
         };
     },
     props: {
@@ -195,17 +206,13 @@ export default {
         flash: Object,
     },
     methods: {
-        search(q) {
-            Inertia.post(`/user/user/search`, this.form, {
-                onSuccess: (data) => {
-                    this.isLoading = false;
-                    console.log(data.users);
-                },
-                onError: (data) => {
-                    this.isLoading = false;
-                },
-            });
-        },
+        search: _.debounce(function() {
+            this.$inertia.replace(
+                route("user.index", {
+                    q: this.q,
+                })
+            );
+        }, 500),
     },
 };
 </script>
