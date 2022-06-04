@@ -1,5 +1,5 @@
 <template>
-<Head title="User" />
+    <Head title="User" />
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -13,7 +13,9 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item">
-                                <Link href="/dashboard">Dashboard</Link>
+                                <Link :href="route('user.dashboard')"
+                                    >Dashboard</Link
+                                >
                             </li>
                             <li class="breadcrumb-item active">User</li>
                         </ol>
@@ -31,12 +33,43 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
+                        <div
+                            class="alert alert-success alert-dismissible"
+                            v-if="flash.success"
+                        >
+                            <button
+                                type="button"
+                                class="close"
+                                data-dismiss="alert"
+                                aria-hidden="true"
+                            >
+                                ×
+                            </button>
+                            {{ flash.success }}
+                        </div>
+                        <div
+                            class="alert alert-danger alert-dismissible"
+                            v-if="flash.error"
+                        >
+                            <button
+                                type="button"
+                                class="close"
+                                data-dismiss="alert"
+                                aria-hidden="true"
+                            >
+                                ×
+                            </button>
+                            {{ flash.error }}
+                        </div>
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">
-                                    <button class="btn btn-success">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
+                                    <Link
+                                        :href="route('user.create')"
+                                        class="btn btn-sm btn-success"
+                                    >
+                                        <i class="fas fa-plus"></i> Create
+                                    </Link>
                                 </h3>
                                 <div class="card-tools">
                                     <div
@@ -44,6 +77,8 @@
                                         style="width: 150px"
                                     >
                                         <input
+                                            v-model="form.q"
+                                            @input="search()"
                                             type="text"
                                             name="table_search"
                                             class="form-control float-right"
@@ -73,7 +108,7 @@
                                     </thead>
                                     <tbody>
                                         <tr
-                                            v-for="(user, index) in users"
+                                            v-for="(user, index) in users.data"
                                             :key="user.id"
                                         >
                                             <td>{{ index + 1 }}</td>
@@ -82,25 +117,32 @@
                                             <td>{{ user.created_at }}</td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <button
+                                                    <Link :href="route('user.edit', user.id)"
                                                         class="btn btn-primary"
                                                     >
                                                         <i
                                                             class="fas fa-pencil-alt"
                                                         ></i>
-                                                    </button>
-                                                    <button
+                                                    </Link>
+                                                    <Link
+                                                        :href="route('user.destroy', user.id)"
+                                                        method="delete"
                                                         class="btn btn-danger"
                                                     >
                                                         <i
                                                             class="fas fa-trash"
                                                         ></i>
-                                                    </button>
+                                                    </Link>
                                                 </div>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
+                            </div>
+                            <div class="card-footer">
+                                <div class="text-center mt-3">
+                                    <Pagination :links="users.links"></Pagination>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -116,24 +158,43 @@
 <script>
 //import layout App
 import LayoutApp from "../../../Layouts/User/App.vue";
+import Pagination from "../../../Layouts/User/Pagination.vue";
 import { Link, Head } from "@inertiajs/inertia-vue3";
+import { Inertia } from "@inertiajs/inertia";
+import { reactive } from "vue";
 
 export default {
     //set layout
     layout: LayoutApp,
     components: {
-        Link, Head
+        Link,
+        Head,
+        Pagination
+    },
+    data() {
+        return {
+            isLoading: false,
+            form: reactive({
+                q: "",
+            }),
+        };
     },
     props: {
         users: Object,
+        flash: Object,
     },
     methods: {
-        openAddModal(data) {
-            this.$root.$emit("bv::show::modal", "your-modal-id");
-        },
-        openEditModal(data) {
-            this.$root.$emit("bv::show::modal", "your-modal-id");
-        },
+        search(q){
+            Inertia.post(`/user/user/search`, this.form, {
+                onSuccess: (data) => {
+                    this.isLoading = false;
+                    console.log(data.users);
+                },
+                onError: (data) => {
+                    this.isLoading = false;
+                },
+            });
+        }
     },
 };
 </script>

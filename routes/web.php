@@ -26,9 +26,11 @@ Route::middleware(['auth'])->prefix('user')->group(function () {
     
     Route::get('/dashboard', DashboardController::class)->name('user.dashboard');
 
-    Route::controller(UserController::class)->prefix('user')->group(function () {
-        Route::get('/', 'index')->name('user.user.index');
-    });
+    // Route::controller(UserController::class)->prefix('user')->group(function () {
+    //     Route::get('/', 'index')->name('user.user.index');
+    // });
+    Route::post('/user/search', [UserController::class, 'search'])->name('user.search');
+    Route::resource('user', UserController::class);
 });
 
 Auth::routes([

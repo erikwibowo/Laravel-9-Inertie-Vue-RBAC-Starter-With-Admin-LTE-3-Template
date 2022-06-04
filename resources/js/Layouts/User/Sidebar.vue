@@ -60,14 +60,14 @@
                     </li>
 
                     <li class="nav-item">
-                        <Link :href="route('user.user.index')" class="nav-link" :class="{'active' : $page.component == 'User/User/Index'}">
+                        <Link :href="route('user.index')" class="nav-link" :class="{'active' : $page.url.startsWith('/user/user')}">
                             <i class="nav-icon fas fa-users"></i>
                             <p>User</p>
                         </Link>
                     </li>
                     <!-- Add icons to the links using the .nav-icon class
                     with font-awesome or any other icon font library -->
-                    <li class="nav-item menu-open">
+                    <!-- <li class="nav-item menu-open">
                         <a href="#" class="nav-link active">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>
@@ -100,7 +100,7 @@
                                 >
                             </p>
                         </a>
-                    </li>
+                    </li> -->
                     <li class="nav-header"></li>
                     <li class="nav-item">
                         <Link
@@ -109,7 +109,7 @@
                             @click.prevent="logout"
                         >
                             <i class="fas fa-sign-out-alt nav-icon"></i>
-                            <p>KELUAR</p>
+                            <p>LOGOUT</p>
                         </Link>
                     </li>
                     <li class="nav-header"></li>

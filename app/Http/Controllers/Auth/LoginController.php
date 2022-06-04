@@ -48,7 +48,7 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-        return to_route('dashboard');
+        return to_route('user.dashboard');
     }
 
     public function logout(Request $request)
