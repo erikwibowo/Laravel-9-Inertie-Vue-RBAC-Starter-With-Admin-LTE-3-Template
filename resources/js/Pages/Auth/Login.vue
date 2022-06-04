@@ -38,23 +38,45 @@
                                     <span class="fas fa-lock"></span>
                                 </div>
                             </div>
-                            <div v-if="errors.password" class="invalid-feedback">
+                            <div
+                                v-if="errors.password"
+                                class="invalid-feedback"
+                            >
                                 {{ errors.password }}
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-8">
+                            <div class="col-6">
                                 <div class="icheck-primary">
-                                    <input type="checkbox" id="remember" v-model="form.remember" />
+                                    <input
+                                        type="checkbox"
+                                        id="remember"
+                                        v-model="form.remember"
+                                    />
                                     <label for="remember"> Remember Me </label>
                                 </div>
                             </div>
 
-                            <div class="col-4">
+                            <div class="col-6">
                                 <button
                                     type="submit"
-                                    class="btn btn-primary btn-block">
+                                    class="btn btn-primary btn-block"
+                                    v-if="!isLoading"
+                                >
                                     Sign In
+                                </button>
+                                <button
+                                    type="Button"
+                                    disabled
+                                    class="btn btn-primary btn-block"
+                                    v-if="isLoading"
+                                >
+                                    <span
+                                        class="spinner-border spinner-border-sm"
+                                        role="status"
+                                        aria-hidden="true"
+                                    ></span>
+                                    Loading...
                                 </button>
                             </div>
                         </div>
@@ -83,29 +105,27 @@ export default {
     props: {
         errors: Object,
     },
-
-    //define composition API
-    setup() {
-        //define state
-        const form = reactive({
-            email: "",
-            password: "",
-            remember: false,
-        })
-
-        //method storeLogin
-        const storeLogin = () => {
-            //send data ke server
-            Inertia.post("/login", {
-                email: form.email,
-                password: form.password,
-                remember: form.remember,
-            })
-        }
-
+    data() {
         return {
-            form,
-            storeLogin,
+            form: reactive({
+                email: "",
+                password: "",
+                remember: false,
+            }),
+            isLoading: false,
+        };
+    },
+    methods: {
+        storeLogin() {
+            this.isLoading = true;
+            Inertia.post("/login", this.form, {
+                onSuccess: (data) => {
+                    this.isLoading = false;
+                },
+                onError: (data) => {
+                    this.isLoading = false;
+                },
+            });
         }
     },
 };

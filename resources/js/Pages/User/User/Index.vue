@@ -33,7 +33,9 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title">
-                                    <button class="btn btn-success"><i class="fas fa-plus"></i></button>
+                                    <button class="btn btn-success">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
                                 </h3>
                                 <div class="card-tools">
                                     <div
@@ -69,15 +71,30 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="(user, index) in users" :key="user.id">
-                                            <td>{{ index+1 }}</td>
+                                        <tr
+                                            v-for="(user, index) in users"
+                                            :key="user.id"
+                                        >
+                                            <td>{{ index + 1 }}</td>
                                             <td>{{ user.name }}</td>
                                             <td>{{ user.email }}</td>
                                             <td>{{ user.created_at }}</td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <button class="btn btn-primary"><i class="fas fa-pencil-alt"></i></button>
-                                                    <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                                    <button
+                                                        class="btn btn-primary"
+                                                    >
+                                                        <i
+                                                            class="fas fa-pencil-alt"
+                                                        ></i>
+                                                    </button>
+                                                    <button
+                                                        class="btn btn-danger"
+                                                    >
+                                                        <i
+                                                            class="fas fa-trash"
+                                                        ></i>
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -108,6 +125,14 @@ export default {
     },
     props: {
         users: Object,
+    },
+    methods: {
+        openAddModal(data) {
+            this.$root.$emit("bv::show::modal", "your-modal-id");
+        },
+        openEditModal(data) {
+            this.$root.$emit("bv::show::modal", "your-modal-id");
+        },
     },
 };
 </script>

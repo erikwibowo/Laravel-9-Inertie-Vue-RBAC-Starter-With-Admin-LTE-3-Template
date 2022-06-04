@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="{{ asset('template/user/css/adminlte.min.css') }}">
     <script src="{{ mix('/js/app.js') }}" defer></script>
     </head>
-    <body class="hold-transition sidebar-mini">
+    <body class="sidebar-mini layout-fixed">
         @inertia
         <!-- jQuery -->
         <script src="{{ asset('template/user/plugins/jquery/jquery.min.js') }}"></script>

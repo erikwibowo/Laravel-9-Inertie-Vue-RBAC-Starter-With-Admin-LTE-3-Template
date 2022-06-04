@@ -53,14 +53,14 @@
                     data-accordion="false"
                 >
                     <li class="nav-item">
-                        <Link href="/dashboard" class="nav-link" @click.prevent="activeClass('dashboard')">
+                        <Link href="/dashboard" class="nav-link" :class="{'active' : $page.component == 'User/Dashboard/Index'}">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>Dashboard</p>
                         </Link>
                     </li>
 
                     <li class="nav-item">
-                        <Link href="/user" class="nav-link" @click.prevent="activeClass('user')">
+                        <Link href="/user" class="nav-link" :class="{'active' : $page.component == 'User/User/Index'}">
                             <i class="nav-icon fas fa-users"></i>
                             <p>User</p>
                         </Link>
@@ -135,23 +135,9 @@ export default {
     props: {
         user: Object,
     },
-    data() {
-        return {
-            currentLink: location.href,
-        };
-    },
-    mounted() {
-        this.setCurrentLink();
-    },
     methods: {
         logout(){
             Inertia.post("/logout");
-        },
-        activeClass(segment) {
-            return segment == this.currentLink ? true : false;
-        },
-        setCurrentLink() {
-            this.currentLink = new URL(location.href).pathname.split("/").pop();
         },
     },
 };
